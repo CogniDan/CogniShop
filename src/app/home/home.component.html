@@ -1,0 +1,3 @@
+<div *ngFor="let product of products$ | async">
+    <app-product [product]="product" [cartId]="cartId" [canAdd]="true" [canDelete]="false"></app-product>
+</div>
