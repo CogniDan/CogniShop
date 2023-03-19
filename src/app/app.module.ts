@@ -16,6 +16,9 @@ import { ContainerComponent } from './container/container.component';
 import { StoreModule, provideStore } from '@ngrx/store';
 import { CartEffects } from './app.effects';
 import { cartReducer } from './app.reducers';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatCardModule} from '@angular/material/card';
+import {MatGridListModule} from '@angular/material/grid-list'
 
 @NgModule({
   declarations: [
@@ -34,7 +37,10 @@ import { cartReducer } from './app.reducers';
     GraphQLModule,
     HttpClientModule,
     StoreModule.forRoot({ cart: cartReducer }),
-    EffectsModule.forRoot([CartEffects])
+    EffectsModule.forRoot([CartEffects]),
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatGridListModule
   ],
   providers: [
   ],

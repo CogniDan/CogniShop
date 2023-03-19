@@ -1,5 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+//import { Observable } from '@apollo/client';
+import { map, Observable, of } from 'rxjs';
 import { Product } from './product.model';
 
 @Injectable({
@@ -7,9 +9,29 @@ import { Product } from './product.model';
 })
 export class ProductDummyService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   public getProducts = () => of(dummyProducts)
+
+  public getDynamicProducts() : Observable<Product[]>{
+    return this.http.get("https://fakestoreapi.com/products")
+    .pipe(
+      map((res:any) =>{
+      return res.map((rec: any) => {
+        let p : Product = { 
+          id: rec.Id,
+          name: rec.title,
+          quantity: rec.rating.count,
+          price: rec.rating.rate,
+          description: rec.description,
+          images: [rec.image]
+        }
+        return p;
+      }
+        )
+      
+    }));
+  }
 }
 
 const dummyProducts: Product[] = [

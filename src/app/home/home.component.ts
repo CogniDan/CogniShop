@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
     private store: Store<AppState>,
     private productService: ProductDummyService
   ) {
-    this.products$ = this.productService.getProducts();
+    this.products$ = this.productService.getDynamicProducts();
     this.store.select(state => state.cart).subscribe(c => console.log(c));
     this.store.select(state => state.cart.id).subscribe(id => this.cartId = id);
   }
