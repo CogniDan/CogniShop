@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { initCart } from './app.actions';
+import { initCart, initCartSuccess } from './app.actions';
 import { AppState } from './app.model';
 
 @Component({

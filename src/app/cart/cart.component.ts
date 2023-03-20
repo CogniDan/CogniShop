@@ -13,13 +13,11 @@ import { Product } from '../product/product.model';
 export class CartComponent implements OnInit {
 
   public products$: Observable<Product[]>;
-  public cartId = '';
 
   constructor(
     private store: Store<AppState>
   ) {
     this.products$ = this.store.select(selectCartProducts);
-    this.store.select(state => state.cart.id).subscribe(id => this.cartId = id);
   }
   
   ngOnInit() {

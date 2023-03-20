@@ -15,18 +15,16 @@ export class ProductComponent {
   @Input() 
   canDelete: boolean = false;
   @Input() 
-  product: Product = {id:'', name: '', description: '', quantity: 0, price: 0};
-  @Input() 
-  cartId: string = '';
+  product: Product = {id: 0, name: '', description: '', quantity: 0, price: 0};
 
   constructor(
     private store: Store<AppState>) {
     }
 
   public addProduct = () => {
-    this.store.dispatch(addCartItem({ cartId: this.cartId, product: this.product }));
+    this.store.dispatch(addCartItem({ product: this.product }));
   }
   public deleteProduct = () => {
-    this.store.dispatch(deleteCartItem({ cartId: this.cartId, id: this.product.id }));
+    this.store.dispatch(deleteCartItem({ id: this.product.id }));
   }
 }

@@ -20,10 +20,10 @@ export enum CartActionTypes {
 export const initCart = createAction(CartActionTypes.Init);
 export const initCartSuccess = createAction(CartActionTypes.InitSuccess, props<{ cart: Cart }>());
 
-export const addCartItem = createAction(CartActionTypes.Add, props<{ cartId: string, product: Product }>());
+export const addCartItem = createAction(CartActionTypes.Add, props<{ product: Product }>());
 export const addCartItemSuccess = createAction(CartActionTypes.AddSuccess, props<{ cart: Cart }>());
 
-export const deleteCartItem = createAction(CartActionTypes.Delete, props<{ cartId: string, id: string }>());
+export const deleteCartItem = createAction(CartActionTypes.Delete, props<{ id: number }>());
 export const deleteCartItemSuccess = createAction(CartActionTypes.DeleteSuccess, props<{ cart: Cart }>());
 
 // TODO: implement rest actions/effects priority 1

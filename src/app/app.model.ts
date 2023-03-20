@@ -1,7 +1,8 @@
 import { Product } from "./product/product.model"
 
 export interface AppState {
-    cart: Cart
+    cart: Cart,
+    test: boolean
 }
 
 export interface Cart {
