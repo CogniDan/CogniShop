@@ -1,6 +1,6 @@
 import { Action, createAction, props } from '@ngrx/store';
 import { Cart } from './app.model';
-import { Product } from './product/product.model';
+import { Product } from '../shared/models/product.model';
 
 export enum CartActionTypes {
     Init = '[Cart Component] Init',

@@ -5,7 +5,7 @@ import { map, exhaustMap, catchError, of } from 'rxjs';
 import { CartActionTypes, initCartSuccess, addCartItemSuccess, deleteCartItemSuccess } from './app.actions';
 import { Cart } from './app.model';
 import { GenerateId, GetCartId, GetOrGenerateId, SetCartId } from './app.utils';
-import { ADD_ITEM_TO_CART, GET_CART, REMOVE_ITEM_FROM_CART } from './cart-ql/cart-ql.queries';
+import { ADD_ITEM_TO_CART, GET_CART, REMOVE_ITEM_FROM_CART } from '../cart/cart-ql/cart-ql.queries';
 
 @Injectable()
 export class CartEffects {
