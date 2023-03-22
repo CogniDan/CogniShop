@@ -1,6 +1,6 @@
 import { Action, createAction, props } from '@ngrx/store';
 import { Cart } from './app.model';
-import { Product } from './product/product.model';
+import { Checkout, Product } from './product/product.model';
 
 export enum CartActionTypes {
     Init = '[Cart Component] Init',
@@ -13,6 +13,8 @@ export enum CartActionTypes {
     DeleteSuccess = '[Cart Component] Delete Success',
 
     Checkout = '[Cart Component] Checkout',
+    CheckoutSuccess = '[Cart Component] Checkout Success',
+
     Empty = '[Cart Component] Empty',
     UpdateQuantity = '[Cart Component] Update Quantity',
 }
@@ -26,8 +28,10 @@ export const addCartItemSuccess = createAction(CartActionTypes.AddSuccess, props
 export const deleteCartItem = createAction(CartActionTypes.Delete, props<{ id: number }>());
 export const deleteCartItemSuccess = createAction(CartActionTypes.DeleteSuccess, props<{ cart: Cart }>());
 
+export const checkoutCart = createAction(CartActionTypes.Checkout, props<{ checkout: Checkout }>());
+export const checkoutCartSuccess = createAction(CartActionTypes.CheckoutSuccess, props<{ checkout: Checkout }>());
+
 // TODO: implement rest actions/effects priority 1
-export const checkoutCart = createAction(CartActionTypes.Checkout);
 export const emptyCart = createAction(CartActionTypes.Empty);
 export const updateCartItemQuantity = createAction(CartActionTypes.UpdateQuantity, props<{ product: Product }>());
 

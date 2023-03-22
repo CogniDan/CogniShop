@@ -13,3 +13,7 @@ export interface Cart {
     totalUniqueItems: number,
     items: Product[]
 }
+
+export class Cart implements Cart {
+    
+}

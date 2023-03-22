@@ -29,4 +29,17 @@ export class ProductDummyService {
         })
       );
   }
+
+
+  public getOrderedItems(): Observable<Product[]> {
+    return of(JSON.parse(localStorage.getItem('OrderedItems') ?? '[]') as Product[]);
+  }
+
+
+
+
+  public setOrderedItems(products: Product[]): Observable<boolean> {
+    return of(localStorage.setItem('OrderedItems', JSON.stringify(products)))
+      .pipe(map(x => true));
+  }
 }

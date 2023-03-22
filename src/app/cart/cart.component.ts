@@ -12,7 +12,7 @@ import { Product } from '../product/product.model';
 })
 export class CartComponent implements OnInit {
 
-  public products$: Observable<Product[]>;
+  public products$!: Observable<Product[]>;
 
   constructor(
     private store: Store<AppState>

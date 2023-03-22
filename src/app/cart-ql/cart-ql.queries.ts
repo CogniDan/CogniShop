@@ -29,7 +29,7 @@ query GetCart($id: 	ID!){
 `;
 
 export const ADD_ITEM_TO_CART = gql`
-mutation AddCart($cartId: ID!, $id: ID!, $name: String, $description: String, $images: [String], $price: Int!, $quantity: Int, $metadata: Json){
+mutation AddToCart($cartId: ID!, $id: ID!, $name: String, $description: String, $images: [String], $price: Int!, $quantity: Int, $metadata: Json){
     addItem(
       input: {
         cartId: $cartId
@@ -67,7 +67,7 @@ mutation AddCart($cartId: ID!, $id: ID!, $name: String, $description: String, $i
   }`
 
   export const REMOVE_ITEM_FROM_CART = gql`
-  mutation RemoveCart($cartId: ID!, $id: ID!){
+  mutation RemoveFromCart($cartId: ID!, $id: ID!){
     removeItem(
       input: { 
           cartId: $cartId, 
@@ -97,6 +97,43 @@ mutation AddCart($cartId: ID!, $id: ID!, $name: String, $description: String, $i
         }
         quantity
         metadata
+      }
+    }
+  }`
+
+  export const CHECKOUT_CART = gql`
+  mutation AddToCart($cartId: ID!, $email: String, $notes: String, $shipping: AddressInput!, $billing: AddressInput){
+    checkout(
+      input: {
+        cartId: $cartId
+        email: $email
+        shipping: $shipping
+        billing: $billing
+      }
+    ) {
+      id
+      email
+      billing {
+        name
+        line1
+        city
+        postalCode
+        country
+      }
+      shippingTotal {
+        amount
+        formatted
+      }
+      taxTotal {
+        amount
+        formatted
+      }
+      subTotal {
+        amount
+        formatted
+      }
+      grandTotal {
+        formatted
       }
     }
   }`

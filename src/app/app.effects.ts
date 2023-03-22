@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Apollo } from 'apollo-angular';
 import { map, exhaustMap, catchError, of } from 'rxjs';
-import { CartActionTypes, initCartSuccess, addCartItemSuccess, deleteCartItemSuccess } from './app.actions';
+import { CartActionTypes, initCartSuccess, addCartItemSuccess, deleteCartItemSuccess, checkoutCartSuccess } from './app.actions';
 import { Cart } from './app.model';
 import { GenerateId, GetCartId, GetOrGenerateId, SetCartId } from './app.utils';
-import { ADD_ITEM_TO_CART, GET_CART, REMOVE_ITEM_FROM_CART } from './cart-ql/cart-ql.queries';
+import { ADD_ITEM_TO_CART, CHECKOUT_CART, GET_CART, REMOVE_ITEM_FROM_CART } from './cart-ql/cart-ql.queries';
 
 @Injectable()
 export class CartEffects {
@@ -72,6 +72,24 @@ export class CartEffects {
             })
             .pipe(
                 map(({ data }) => deleteCartItemSuccess({ cart: data.cart })),
+                // add exception handling
+                catchError(() => of({ type: '[Cart API] Cart Removed Error' })
+            ))
+        )
+    ));
+
+    checkoutCart$ = createEffect(() => this.actions$.pipe(
+        ofType(CartActionTypes.Checkout),
+        exhaustMap((action: any) => this.apollo
+            .mutate<any>({
+                mutation: CHECKOUT_CART,
+                variables: {
+                    cartId: GetCartId(),
+                    id: action.id,
+                },
+            })
+            .pipe(
+                map(({ data }) => checkoutCartSuccess({ checkout: data.checkout })),
                 // add exception handling
                 catchError(() => of({ type: '[Cart API] Cart Removed Error' })
             ))
