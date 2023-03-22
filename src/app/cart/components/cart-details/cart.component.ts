@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-//import { AppState } from '../app.model';
-//import { selectCartProducts } from '../app.selectors';
-//import { Product } from '../product/models/product.model';
+import { AppState } from 'src/app/root-store/app.model';
+import { selectCartProducts } from 'src/app/root-store/app.selectors';
+import { Product } from 'src/app/shared/models/product.model';
 
 @Component({
   selector: 'app-cart',
@@ -12,15 +12,12 @@ import { Observable } from 'rxjs';
 })
 export class CartComponent implements OnInit {
 
-  //public products$: Observable<Product[]>;
-  public cartId = '';
+  public products$!: Observable<Product[]>;
 
   constructor(
-    //private store: Store<AppState>
+    private store: Store<AppState>
   ) {
-    console.log("Opened here");
-   // this.products$ = this.store.select(selectCartProducts);
-   // this.store.select(state => state.cart.id).subscribe(id => this.cartId = id);
+    this.products$ = this.store.select(selectCartProducts);
   }
   
   ngOnInit() {

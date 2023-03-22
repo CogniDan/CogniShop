@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from "@angular/forms";
 import { Store } from '@ngrx/store';
-import { checkoutCart } from 'src/app/app.actions';
-import { AppState } from 'src/app/app.model';
-import { Address } from 'src/app/product/product.model';
+import { checkoutCart, emptyCart } from 'src/app/root-store/app.actions';
+import { AppState } from 'src/app/root-store/app.model';
+import { selectCartProducts } from 'src/app/root-store/app.selectors';
+import { Address } from 'src/app/shared/models/product.model';
 
 @Component({
   selector: 'app-checkout',
@@ -22,14 +23,18 @@ export class CheckoutComponent {
     private store: Store<AppState>) {}
 
   checkout = () => {
-    this.store.dispatch(checkoutCart({ 
-      checkout: {
-        email: 'test@cogni.com',
-        notes: 'Test checkout',
-        shipping: this.addressFromForm(),
-        billing: this.addressFromForm()
-      }
-    }));
+    this.store.select(selectCartProducts).subscribe(products => 
+      this.store.dispatch(checkoutCart({ 
+        checkout: {
+          email: 'test@cogni.com',
+          notes: 'Test checkout',
+          shipping: this.addressFromForm(),
+          billing: this.addressFromForm(),
+          products: products
+        }
+      }))
+    );
+    this.store.dispatch(emptyCart());
   }
 
   addressFromForm = (): Address => ({

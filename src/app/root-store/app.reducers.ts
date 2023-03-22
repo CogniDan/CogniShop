@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { initCartSuccess, addCartItemSuccess, deleteCartItemSuccess, checkoutCartSuccess } from './app.actions';
+import { initCartSuccess, addCartItemSuccess, deleteCartItemSuccess, checkoutCartSuccess, emptyCartSuccess } from './app.actions';
 import { AppState, Cart } from './app.model';
 
 export const initialState: AppState = {
@@ -19,7 +19,7 @@ export const cartReducer = createReducer(
     on(addCartItemSuccess, (state, { cart }) => newState(state, cart)),
     on(deleteCartItemSuccess, (state, { cart }) => newState(state, cart)),
     on(initCartSuccess, (state, { cart }) => newState(state, cart)),
-    on(checkoutCartSuccess, (state, { checkout }) => emptyState(state))
+    on(emptyCartSuccess, (state) => emptyState(state))
 );
 
 const newState = (state: AppState, newCart: any): AppState => {

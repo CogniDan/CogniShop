@@ -1,7 +1,14 @@
-<!-- <div *ngFor="let product of products$ | async">
-     <app-product [product]="product" [cartId]="cartId" [canAdd]="false" [canDelete]="true"></app-product>
-</div> -->
-<h1>
-    Cart works
-    
-</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-9">
+            <div class="row">
+                <div class="col">
+                    <app-cart-item *ngFor="let product of products$ | async" [product]="product"></app-cart-item>
+                </div>
+            </div>
+        </div>
+        <div class="col-3 mt-5">
+            <app-checkout></app-checkout>
+        </div>
+    </div>
+</div>

@@ -18,8 +18,7 @@ export class ProductComponent {
   product: Product = {id: 0, name: '', description: '', quantity: 0, price: 0};
 
   constructor(
-    private store: Store<AppState>) {
-    }
+    private store: Store<AppState>) { }
 
   public addProduct = () => {
     this.store.dispatch(addCartItem({product: this.product }));

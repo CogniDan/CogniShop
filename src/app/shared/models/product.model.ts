@@ -24,5 +24,6 @@ export interface Checkout {
     email: string,
     notes: String,
     shipping: Address,
-    billing: Address
+    billing: Address,
+    products?: Product[]
 }

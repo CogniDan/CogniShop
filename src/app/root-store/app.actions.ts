@@ -1,21 +1,23 @@
 import { Action, createAction, props } from '@ngrx/store';
+import { Product, Checkout } from '../shared/models/product.model';
 import { Cart } from './app.model';
-import { Checkout, Product } from './product/product.model';
 
 export enum CartActionTypes {
     Init = '[Cart Component] Init',
     InitSuccess = '[Cart API] Cart Loaded Success',
 
     Add = '[Cart Component] Add',
-    AddSuccess = '[Cart Component] Add Success',
+    AddSuccess = '[Cart API] Add Success',
 
     Delete = '[Cart Component] Delete',
-    DeleteSuccess = '[Cart Component] Delete Success',
+    DeleteSuccess = '[Cart API] Delete Success',
 
     Checkout = '[Cart Component] Checkout',
-    CheckoutSuccess = '[Cart Component] Checkout Success',
+    CheckoutSuccess = '[Cart API] Checkout Success',
 
     Empty = '[Cart Component] Empty',
+    EmptySuccess = '[Cart API] Empty Success',
+
     UpdateQuantity = '[Cart Component] Update Quantity',
 }
 
@@ -31,8 +33,10 @@ export const deleteCartItemSuccess = createAction(CartActionTypes.DeleteSuccess,
 export const checkoutCart = createAction(CartActionTypes.Checkout, props<{ checkout: Checkout }>());
 export const checkoutCartSuccess = createAction(CartActionTypes.CheckoutSuccess, props<{ checkout: Checkout }>());
 
-// TODO: implement rest actions/effects priority 1
 export const emptyCart = createAction(CartActionTypes.Empty);
+export const emptyCartSuccess = createAction(CartActionTypes.EmptySuccess);
+
+// TODO: implement rest actions/effects priority 1
 export const updateCartItemQuantity = createAction(CartActionTypes.UpdateQuantity, props<{ product: Product }>());
 
 // TODO: add error handlers priority 0

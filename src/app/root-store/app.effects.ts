@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Apollo } from 'apollo-angular';
-import { map, exhaustMap, catchError, of } from 'rxjs';
-import { CartActionTypes, initCartSuccess, addCartItemSuccess, deleteCartItemSuccess, checkoutCartSuccess } from './app.actions';
+import { map, exhaustMap, catchError, of, mapTo, switchMap, mergeMap } from 'rxjs';
+import { CartActionTypes, initCartSuccess, addCartItemSuccess, deleteCartItemSuccess, checkoutCartSuccess, emptyCartSuccess } from './app.actions';
 import { Cart } from './app.model';
 import { GenerateId, GetCartId, GetOrGenerateId, SetCartId } from './app.utils';
-import { ADD_ITEM_TO_CART, GET_CART, REMOVE_ITEM_FROM_CART } from '../cart/cart-ql/cart-ql.queries';
+import { ADD_ITEM_TO_CART, GET_CART, REMOVE_ITEM_FROM_CART, CHECKOUT_CART, EMPTY_CART } from '../cart/cart-ql/cart-ql.queries';
+import { ProductDummyService } from '../product/services/product-dummy.service';
 
 @Injectable()
 export class CartEffects {
 
     constructor(
         private actions$: Actions,
+        private productService: ProductDummyService,
         private apollo: Apollo) { }
 
     initCart$ = createEffect(() => this.actions$.pipe(
@@ -78,21 +80,47 @@ export class CartEffects {
         )
     ));
 
-    checkoutCart$ = createEffect(() => this.actions$.pipe(
-        ofType(CartActionTypes.Checkout),
+    checkoutCart$ = createEffect(() => 
+        this.actions$.pipe(
+            ofType(CartActionTypes.Checkout),
+            exhaustMap((action: any) => 
+                this.productService.setOrderedItems(action.checkout.products)
+                    .pipe(
+                        mergeMap((res) => this.apollo
+                            .mutate<any>({
+                                mutation: CHECKOUT_CART,
+                                variables: {
+                                    ...action.checkout,
+                                    cartId: GetCartId(),
+                                },
+                            }),
+                            (rest, graph) => checkoutCartSuccess({ checkout: graph.data.checkout })),
+                            
+                            catchError(() => of({ type: '[Cart API] Cart Checkout Error' })
+                        )
+                    )
+            )
+        )
+    );
+
+    emptyCart$ = createEffect(() => this.actions$.pipe(
+        ofType(CartActionTypes.Empty),
         exhaustMap((action: any) => this.apollo
             .mutate<any>({
-                mutation: CHECKOUT_CART,
+                mutation: EMPTY_CART,
                 variables: {
-                    cartId: GetCartId(),
-                    id: action.id,
+                    id: GetCartId(),
                 },
             })
             .pipe(
-                map(({ data }) => checkoutCartSuccess({ checkout: data.checkout })),
+                map(({ data }) => emptyCartSuccess()),
                 // add exception handling
                 catchError(() => of({ type: '[Cart API] Cart Removed Error' })
             ))
         )
     ));
+}
+
+function forkjoin(arg0: { graphQL: import("rxjs").Observable<import("apollo-angular").MutationResult<any>>; restAPI: any; }) {
+    throw new Error('Function not implemented.');
 }

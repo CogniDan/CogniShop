@@ -102,7 +102,7 @@ mutation AddToCart($cartId: ID!, $id: ID!, $name: String, $description: String, 
   }`
 
   export const CHECKOUT_CART = gql`
-  mutation AddToCart($cartId: ID!, $email: String, $notes: String, $shipping: AddressInput!, $billing: AddressInput){
+  mutation Checkout($cartId: ID!, $email: String!, $shipping: AddressInput!, $billing: AddressInput){
     checkout(
       input: {
         cartId: $cartId
@@ -135,5 +135,14 @@ mutation AddToCart($cartId: ID!, $id: ID!, $name: String, $description: String, 
       grandTotal {
         formatted
       }
+    }
+  }`
+
+  export const EMPTY_CART = gql`
+  mutation Empty($id: ID!){
+    emptyCart(input: { id: $id }) {
+      id
+      totalItems
+      totalUniqueItems
     }
   }`
