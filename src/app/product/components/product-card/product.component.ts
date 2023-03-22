@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { Product } from './product.model';
+import { Product } from '../../../shared/models/product.model';
 import { Store } from '@ngrx/store';
-import { addCartItem, deleteCartItem } from '../app.actions';
-import { AppState } from '../app.model';
+import { addCartItem, deleteCartItem } from '../../../root-store/app.actions';
+import { AppState } from '../../../root-store/app.model';
 
 @Component({
   selector: 'app-product',
@@ -24,9 +24,9 @@ export class ProductComponent {
     }
 
   public addProduct = () => {
-    this.store.dispatch(addCartItem({ cartId: this.cartId, product: this.product }));
+    this.store.dispatch(addCartItem({product: this.product }));
   }
   public deleteProduct = () => {
-    this.store.dispatch(deleteCartItem({ cartId: this.cartId, id: this.product.id }));
+    this.store.dispatch(deleteCartItem({ id: +this.product.id }));
   }
 }

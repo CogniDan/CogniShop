@@ -5,5 +5,9 @@ export const selectCart = createFeatureSelector<Cart>('cart');
 
 export const selectCartProducts = createSelector(
     selectCart,
-    (cart) => cart.items
+    (cart) => {
+      const test = cart as any;
+      console.log(test)
+      return test.cart.items;
+    }
   );

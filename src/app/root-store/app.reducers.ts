@@ -18,24 +18,31 @@ export const cartReducer = createReducer(
     on(addCartItemSuccess, (state, { cart }) => ({
         ...state,
         cart: { 
-            ...cart
+            ...cart,
+            items: cart.items.map(p => ({
+                ...p,
+                id: p.id
+            }))
         }
     })),
     on(deleteCartItemSuccess, (state, { cart }) => ({
         ...state,
         cart: { 
-            ...cart
+            ...cart,
+            items: cart.items.map(p => ({
+                ...p,
+                id: p.id
+            }))
         }
     })),
-    on(initCartSuccess, (state, { cart }) => {
-        // TODO: remove it
-        console.log('Reducer');
-        console.log(cart);
-        return ({
+    on(initCartSuccess, (state, { cart }) => ({
         ...state,
         cart: { 
-            ...cart
+            ...cart,
+            items: cart.items.map(p => ({
+                ...p,
+                id: p.id
+            }))
         }
-    })
-})
+    }))
 );

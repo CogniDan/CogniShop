@@ -1,4 +1,4 @@
-import { Product } from "./product/product.model"
+import { Product } from "../shared/models/product.model"
 
 export interface AppState {
     cart: Cart

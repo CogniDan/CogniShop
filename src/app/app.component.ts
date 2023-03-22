@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { initCart } from './app.actions';
-import { AppState } from './app.model';
+//import { initCart } from './app.actions';
+import { AppState } from './root-store/app.model';
 
 @Component({
   selector: 'app-root',
@@ -12,10 +12,11 @@ export class AppComponent implements OnInit {
   title = 'CogniShop';
 
   constructor(
-    private store: Store<AppState>) {
+    // private store: Store<AppState>
+    ) {
   }
 
   ngOnInit() {
-    this.store.dispatch(initCart());
+//    this.store.dispatch(initCart());
   }
 }

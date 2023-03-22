@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Apollo } from 'apollo-angular';
 import { map, exhaustMap, catchError, of } from 'rxjs';
-import { CartActionTypes } from './app.actions';
+import { CartActionTypes, initCartSuccess, addCartItemSuccess, deleteCartItemSuccess } from './app.actions';
 import { Cart } from './app.model';
-import { GenerateId } from './app.utils';
-import { ADD_ITEM_TO_CART, GET_CART, REMOVE_ITEM_FROM_CART } from './cart-ql/cart-ql.queries';
+import { GenerateId, GetCartId, GetOrGenerateId, SetCartId } from './app.utils';
+import { ADD_ITEM_TO_CART, GET_CART, REMOVE_ITEM_FROM_CART } from '../cart/cart-ql/cart-ql.queries';
 
 @Injectable()
 export class CartEffects {
@@ -20,19 +20,15 @@ export class CartEffects {
             .watchQuery<any>({
                 query: GET_CART,
                 variables: {
-                    id: GenerateId(),
+                    // TODO: use local storage to fetch already excisted carts
+                    id: GetOrGenerateId(),
                 },
             })
             .valueChanges
             .pipe(
                 map(({ data, loading }) => {
-                    // TODO: remove it
-                    console.log('Effect');
-                    console.log(data)
-                    console.log(data.cart)
-                    const cart = data.cart as Cart;
-                    console.log(cart)
-                    return ({ type: CartActionTypes.InitSuccess, payload: cart });
+                    SetCartId(data.cart.id);
+                    return initCartSuccess({ cart: data.cart })
                 }),
                 // add exception handling
                 catchError(() => of({ type: '[Cart API] Cart Loaded Error' })
@@ -46,7 +42,7 @@ export class CartEffects {
             .mutate<any>({
                 mutation: ADD_ITEM_TO_CART,
                 variables: {
-                    cartId: action.cartId,
+                    cartId: GetCartId(),
                     id: action.product.id,
                     name: action.product.name,
                     description: action.product.description,
@@ -57,7 +53,7 @@ export class CartEffects {
                 },
             })
             .pipe(
-                map(({ data }) => ({ type: CartActionTypes.AddSuccess, payload: data.cart })),
+                map(({ data }) => addCartItemSuccess({ cart: data.cart })),
                 // add exception handling
                 catchError(() => of({ type: '[Cart API] Cart Added Error' })
             ))
@@ -70,12 +66,12 @@ export class CartEffects {
             .mutate<any>({
                 mutation: REMOVE_ITEM_FROM_CART,
                 variables: {
-                    cartId: action.cartId,
+                    cartId: GetCartId(),
                     id: action.id,
                 },
             })
             .pipe(
-                map(({ data }) => ({ type: CartActionTypes.DeleteSuccess, payload: data.cart })),
+                map(({ data }) => deleteCartItemSuccess({ cart: data.cart })),
                 // add exception handling
                 catchError(() => of({ type: '[Cart API] Cart Removed Error' })
             ))

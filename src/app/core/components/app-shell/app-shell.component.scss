@@ -1,0 +1,32 @@
+// .product-list{
+//     //margin-top: 2rem;
+//     margin-right: 4rem;
+//     margin-left: 4rem;
+//     padding-top: 2rem;
+
+// }
+// .product-tile{
+//     max-width: 430;
+// }
+
+header {
+    flex-shrink: 0;
+    flex-grow: 0;
+    background: #039be5;
+    padding: 3px 5px;
+}
+
+footer {
+    flex-shrink: 0;
+    flex-grow: 0;
+    background: #eee;
+    padding: 3px 15px;
+}
+
+.content {
+    flex-shrink: 1;
+    flex-grow: 1;
+    padding: 3px 5px;
+    position: relative;
+    overflow-y: auto;
+}
