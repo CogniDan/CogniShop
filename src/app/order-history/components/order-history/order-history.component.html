@@ -1,1 +1,19 @@
-<p>order-history works!</p>
+<div class="orders-container">
+    <h1>
+        Orders history
+    </h1>
+    <mat-accordion >
+        <mat-expansion-panel *ngFor="let order of orders$ | async">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ order.userName }}
+            </mat-panel-title>
+            <mat-panel-description>
+              {{ order.address }}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+      
+          <app-order-details [order]="order"></app-order-details>
+        </mat-expansion-panel>
+      </mat-accordion>
+</div>

@@ -7,6 +7,7 @@ import { Cart } from './app.model';
 import { GenerateId, GetCartId, GetOrGenerateId, SetCartId } from './app.utils';
 import { ADD_ITEM_TO_CART, GET_CART, REMOVE_ITEM_FROM_CART, CHECKOUT_CART, EMPTY_CART } from '../cart/cart-ql/cart-ql.queries';
 import { ProductDummyService } from '../product/services/product-dummy.service';
+import { OrdersService } from '../order-history/services/orders.service';
 
 @Injectable()
 export class CartEffects {
@@ -14,6 +15,7 @@ export class CartEffects {
     constructor(
         private actions$: Actions,
         private productService: ProductDummyService,
+        private orderService: OrdersService,
         private apollo: Apollo) { }
 
     initCart$ = createEffect(() => this.actions$.pipe(
@@ -88,7 +90,31 @@ export class CartEffects {
         this.actions$.pipe(
             ofType(CartActionTypes.Checkout),
             exhaustMap((action: any) => 
-                this.productService.setOrderedItems(action.checkout.products)
+                // this.productService.setOrderedItems(action.checkout.products)
+                //     .pipe(
+                //         mergeMap((res) => this.apollo
+                //             .mutate<any>({
+                //                 mutation: CHECKOUT_CART,
+                //                 variables: {
+                //                     ...action.checkout,
+                //                     cartId: GetCartId(),
+                //                 },
+                //             }),
+                //             (rest, graph) => checkoutCartSuccess({ checkout: graph.data.checkout })),
+                            
+                //             catchError(() => of({ type: '[Cart API] Cart Checkout Error' })
+                //         )
+                //     )
+                {
+                    console.log(action.checkout)
+                   return this.orderService.addOrder({
+                    id: 'id',
+                    userName: action.checkout.shipping.name,
+                    items: action.checkout.products,
+                    totalPrice: 2,
+                    address: action.checkout.shipping.line1 
+
+                   })
                     .pipe(
                         mergeMap((res) => this.apollo
                             .mutate<any>({
@@ -103,6 +129,8 @@ export class CartEffects {
                             catchError(() => of({ type: '[Cart API] Cart Checkout Error' })
                         )
                     )
+                }
+                
             )
         )
     );
