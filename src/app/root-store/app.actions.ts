@@ -18,7 +18,11 @@ export enum CartActionTypes {
     Empty = '[Cart Component] Empty',
     EmptySuccess = '[Cart API] Empty Success',
 
-    UpdateQuantity = '[Cart Component] Update Quantity',
+    IncrementQuantity = '[Cart Component] Increment Quantity',
+    IncrementQuantitySuccess = '[Cart Component] Increment Quantity Success',
+
+    DecrementQuantity = '[Cart Component] Decrement Quantity',
+    DecrementQuantitySuccess = '[Cart Component] Decrement Quantity Success',
 }
 
 export const initCart = createAction(CartActionTypes.Init);
@@ -36,7 +40,10 @@ export const checkoutCartSuccess = createAction(CartActionTypes.CheckoutSuccess,
 export const emptyCart = createAction(CartActionTypes.Empty);
 export const emptyCartSuccess = createAction(CartActionTypes.EmptySuccess);
 
-// TODO: implement rest actions/effects priority 1
-export const updateCartItemQuantity = createAction(CartActionTypes.UpdateQuantity, props<{ product: Product }>());
+export const incrementCartItemQuantity = createAction(CartActionTypes.IncrementQuantity, props<{ product: Product, by: number }>());
+export const incrementCartItemQuantitySuccess = createAction(CartActionTypes.IncrementQuantitySuccess, props<{ cart: Cart }>());
+
+export const decrementCartItemQuantity = createAction(CartActionTypes.DecrementQuantity, props<{ product: Product, by: number }>());
+export const decrementCartItemQuantitySuccess = createAction(CartActionTypes.DecrementQuantitySuccess, props<{ cart: Cart }>());
 
 // TODO: add error handlers priority 0

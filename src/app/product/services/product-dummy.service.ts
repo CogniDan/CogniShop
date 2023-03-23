@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, of } from 'rxjs';
+import { map, Observable, of, tap } from 'rxjs';
 import { Product } from '../../shared/models/product.model';
 
 @Injectable({
@@ -71,19 +71,7 @@ export class ProductDummyService {
         }
       )
       .pipe(
-        map((res: any) => {
-          return JSON.parse(res).map((rec: any) => {
-            let p: Product = {
-              id: rec.Id,
-              name: rec.title,
-              quantity: rec.quantity,
-              price: rec.price,
-              description: rec.description,
-              images: rec.images,
-            };
-            return p;
-          });
-        })
+        tap((res: any) => console.log(res))
       );
   }
 }

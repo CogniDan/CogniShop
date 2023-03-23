@@ -21,9 +21,11 @@ export class ProductComponent {
     private store: Store<AppState>) { }
 
   public addProduct = () => {
-    console.log("product")
-    console.log(this.product)
-    this.store.dispatch(addCartItem({product: this.product }));
+    this.store.dispatch(addCartItem({product: {
+        ...this.product,
+        quantity: 1,
+      } 
+    }));
   }
   public deleteProduct = () => {
     this.store.dispatch(deleteCartItem({ id: +this.product.id }));

@@ -34,10 +34,14 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
+import { QuantityInputComponent } from './components/quantity-input/quantity-input.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    QuantityInputComponent
+  ],
   imports: [
     CommonModule,
     MatCardModule,
@@ -74,7 +78,8 @@ import { MatTreeModule } from '@angular/material/tree';
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
-    MatGridListModule
+    MatGridListModule,
+    FormsModule
   ],
   exports:[
     MatCardModule,
@@ -111,7 +116,9 @@ import { MatTreeModule } from '@angular/material/tree';
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
-    MatGridListModule
+    MatGridListModule,
+    
+    QuantityInputComponent
     ]
 })
 export class SharedModule { }

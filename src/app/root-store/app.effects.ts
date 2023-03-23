@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Apollo } from 'apollo-angular';
-import { map, exhaustMap, catchError, of, mapTo, switchMap, mergeMap } from 'rxjs';
-import { CartActionTypes, initCartSuccess, addCartItemSuccess, deleteCartItemSuccess, checkoutCartSuccess, emptyCartSuccess } from './app.actions';
+import { map, exhaustMap, catchError, of, switchMap, mergeMap } from 'rxjs';
+import { CartActionTypes, initCartSuccess, addCartItemSuccess, deleteCartItemSuccess, checkoutCartSuccess, emptyCartSuccess, incrementCartItemQuantitySuccess, decrementCartItemQuantitySuccess } from './app.actions';
 import { Cart } from './app.model';
 import { GenerateId, GetCartId, GetOrGenerateId, SetCartId } from './app.utils';
-import { ADD_ITEM_TO_CART, GET_CART, REMOVE_ITEM_FROM_CART, CHECKOUT_CART, EMPTY_CART } from '../cart/cart-ql/cart-ql.queries';
+import { ADD_ITEM_TO_CART, GET_CART, REMOVE_ITEM_FROM_CART, CHECKOUT_CART, EMPTY_CART, INCREMENT_ITEM, DECREMENT_ITEM } from '../cart/cart-ql/cart-ql.queries';
 import { ProductDummyService } from '../product/services/product-dummy.service';
 
 @Injectable()
@@ -123,8 +123,42 @@ export class CartEffects {
             ))
         )
     ));
-}
 
-function forkjoin(arg0: { graphQL: import("rxjs").Observable<import("apollo-angular").MutationResult<any>>; restAPI: any; }) {
-    throw new Error('Function not implemented.');
+    incrementItemQuantity$ = createEffect(() => this.actions$.pipe(
+        ofType(CartActionTypes.IncrementQuantity),
+        exhaustMap((action: any) => this.apollo
+            .mutate<any>({
+                mutation: INCREMENT_ITEM,
+                variables: {
+                    cartId: GetCartId(),
+                    id: action.product.id,
+                    by: action.by
+                },
+            })
+            .pipe(
+                map(({ data }) => incrementCartItemQuantitySuccess({ cart: data.incrementItemQuantity })),
+                // add exception handling
+                catchError(() => of({ type: '[Cart API] Cart increment item Error' })
+            ))
+        )
+    ));
+
+    decrementItemQuantity$ = createEffect(() => this.actions$.pipe(
+        ofType(CartActionTypes.DecrementQuantity),
+        exhaustMap((action: any) => this.apollo
+            .mutate<any>({
+                mutation: DECREMENT_ITEM,
+                variables: {
+                    cartId: GetCartId(),
+                    id: action.product.id,
+                    by: action.by
+                },
+            })
+            .pipe(
+                map(({ data }) => decrementCartItemQuantitySuccess({ cart: data.decrementItemQuantity })),
+                // add exception handling
+                catchError(() => of({ type: '[Cart API] Cart decrement item Error' })
+            ))
+        )
+    ));
 }

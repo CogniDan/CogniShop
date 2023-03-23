@@ -1,15 +1,20 @@
 <mat-card class="w-50 p-3 m-5">
-    <mat-card-header>
-      <!-- <div mat-card-avatar class="example-header-image"></div> -->
-      <mat-card-title style="max-height: 30px; word-wrap: break-word; white-space: nowrap;">{{ product.name }}</mat-card-title>
-      <mat-card-subtitle>available: {{ product.quantity }}</mat-card-subtitle>
+    <mat-card-header class="container">
+        <!-- <div mat-card-avatar class="example-header-image"></div> -->
+        <div class="row">
+            <mat-card-title class="text-left">{{ product.name }}</mat-card-title>
+            <div class="w-100"></div>
+            <app-quantity-input [value]="product.quantity || 0" (valueChange)="updateQuantity($event)" [max]="100">
+            </app-quantity-input>
+        </div>
 
     </mat-card-header>
-    <img style="max-height: 250px; max-width: 250px;" mat-card-image src={{product.images![0]}} alt="Photo of a Shiba Inu">
+    <img style="max-height: 250px; max-width: 250px;" mat-card-image src={{product.images![0]}}
+        alt="Photo of a Shiba Inu">
     <mat-card-content>
-      <p class="text-left">
-        {{ product.description }}
-      </p>
+        <p class="text-left">
+            {{ product.description }}
+        </p>
     </mat-card-content>
     <mat-card-footer>
         <mat-card-subtitle>{{ product.price | currency }}</mat-card-subtitle>
@@ -17,4 +22,4 @@
     <mat-card-actions>
         <button (click)="deleteProduct()">Delete</button>
     </mat-card-actions>
-  </mat-card>
+</mat-card>
