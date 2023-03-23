@@ -146,3 +146,43 @@ mutation AddToCart($cartId: ID!, $id: ID!, $name: String, $description: String, 
       totalUniqueItems
     }
   }`
+
+  export const INCREMENT_ITEM = gql`
+  mutation IncrementItemQuantity($cartId: ID!, $id: ID!, $by: Int!){
+    incrementItemQuantity(
+      input: { cartId: $cartId, id: $id, by: $by }
+    ) {
+      id
+      isEmpty
+      abandoned
+      totalItems
+      totalUniqueItems
+      items {
+        id
+        name
+        description
+        images
+        quantity
+      }
+    }
+  }`
+
+  export const DECREMENT_ITEM = gql`
+  mutation DecrementItemQuantity($cartId: ID!, $id: ID!, $by: Int!){
+    decrementItemQuantity(
+      input: { cartId: $cartId, id: $id, by: $by }
+    ) {
+      id
+      isEmpty
+      abandoned
+      totalItems
+      totalUniqueItems
+      items {
+        id
+        name
+        description
+        images
+        quantity
+      }
+    }
+  }`

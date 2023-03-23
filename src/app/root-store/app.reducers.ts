@@ -1,5 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
-import { initCartSuccess, addCartItemSuccess, deleteCartItemSuccess, checkoutCartSuccess, emptyCartSuccess } from './app.actions';
+import { Product } from '../shared/models/product.model';
+import { initCartSuccess, addCartItemSuccess, deleteCartItemSuccess, checkoutCartSuccess, emptyCartSuccess, incrementCartItemQuantitySuccess, decrementCartItemQuantitySuccess } from './app.actions';
 import { AppState, Cart } from './app.model';
 
 export const initialState: AppState = {
@@ -19,7 +20,9 @@ export const cartReducer = createReducer(
     on(addCartItemSuccess, (state, { cart }) => newState(state, cart)),
     on(deleteCartItemSuccess, (state, { cart }) => newState(state, cart)),
     on(initCartSuccess, (state, { cart }) => newState(state, cart)),
-    on(emptyCartSuccess, (state) => emptyState(state))
+    on(emptyCartSuccess, (state) => emptyState(state)),
+    on(incrementCartItemQuantitySuccess, (state, { cart }) => updateCartItemsState(state, cart)),
+    on(decrementCartItemQuantitySuccess, (state, { cart }) => updateCartItemsState(state, cart)),
 );
 
 const newState = (state: AppState, newCart: any): AppState => {
@@ -63,4 +66,21 @@ const emptyState = (state: AppState): AppState => {
             items: []
         }
     }
+}
+
+const updateCartItemsState = (state: AppState, newCart: any): AppState => {
+    console.log(newCart)
+    return {
+        ...state,
+        cart: { 
+            ...state.cart,
+            items: [
+                ...state.cart.items.map(item => ({
+                    ...item,
+                    quantity: newCart.items.find((u: Product) => u.id === item.id)?.quantity
+                }))
+            ]
+        }
+    }
+
 }

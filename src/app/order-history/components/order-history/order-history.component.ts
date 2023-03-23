@@ -6,7 +6,7 @@ import { OrdersHistoryService } from '../../services/order-history.service';
 @Component({
   selector: 'app-order-history',
   templateUrl: './order-history.component.html',
-  styleUrls: ['./order-history.component.scss']
+  styleUrls: ['./order-history.component.scss'],
 })
 export class OrderHistoryComponent implements OnInit {
   ngOnInit(): void {
