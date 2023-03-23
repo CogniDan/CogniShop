@@ -21,6 +21,8 @@ export class ProductComponent {
     private store: Store<AppState>) { }
 
   public addProduct = () => {
+    console.log("product")
+    console.log(this.product)
     this.store.dispatch(addCartItem({product: this.product }));
   }
   public deleteProduct = () => {

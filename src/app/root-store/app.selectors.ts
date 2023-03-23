@@ -8,7 +8,19 @@ export const selectCartProducts = createSelector(
   (cart: Cart) => {
     const test = cart as any;
     // TODO: smth completely wrong here
+    console.log("// selector")
     console.log(test)
     return test.cart.items;
+  }
+);
+
+export const selectCartTotalProductsNumber = createSelector(
+  selectCart,
+  (cart: Cart) => {
+    const test = cart as any;
+    // TODO: smth completely wrong here
+    console.log("// selector")
+    console.log(test)
+    return test.cart.totalUniqueItems;
   }
 );

@@ -16,12 +16,12 @@ export class ProductDummyService {
       )
       .pipe(
         map((res: any) => {
-          return JSON.parse(res).map((rec: any) => {
+          return res.map((rec: any) => {
             let p: Product = {
-              id: rec.Id,
-              name: rec.title,
+              id: rec.id,
+              name: rec.name,
               quantity: rec.quantity,
-              price: rec.price,
+              price: Math.ceil(rec.price),
               description: rec.description,
               images: rec.images,
             };

@@ -19,3 +19,11 @@ footer {
     position: relative;
     overflow-y: auto;
 }
+
+app-shell {
+    height: 100vh;
+    display: flex;
+
+    /* Direction of the items, can be row or column */
+    flex-direction: column;
+}

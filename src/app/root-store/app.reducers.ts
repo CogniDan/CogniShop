@@ -24,7 +24,7 @@ export const cartReducer = createReducer(
 
 const newState = (state: AppState, newCart: any): AppState => {
     console.log(newCart)
-    if (newCart.items !== undefined) {
+    if (newCart?.items != null) {
         const cart = newCart as Cart;
         return {
             ...state,
@@ -32,7 +32,7 @@ const newState = (state: AppState, newCart: any): AppState => {
                 ...cart,
                 items: cart.items?.map(p => ({
                     ...p,
-                    id: +p.id
+                    id: p.id
                 }))
             }
         }
@@ -44,7 +44,7 @@ const newState = (state: AppState, newCart: any): AppState => {
                 ...cart,
                 items: cart.items?.map(p => ({
                     ...p,
-                    id: +p.id
+                    id: p.id
                 }))
             }
         }

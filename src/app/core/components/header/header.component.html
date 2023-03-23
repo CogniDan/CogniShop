@@ -1,5 +1,12 @@
-<nav>
-    <a class="menu-action" routerLink="/home" routerLinkActive="active">Home</a>
-    <a class="menu-action" routerLink="/cart" routerLinkActive="active">Cart</a>
-    <a class="menu-action" routerLink="/history" routerLinkActive="active">History</a>
+<nav mat-tab-nav-bar>
+    <a mat-tab-link class="menu-action" routerLink="/home" routerLinkActive="active-link">
+        Home
+    </a>
+    <a mat-tab-link class="menu-action" routerLink="/history" routerLinkActive="active-link">
+        History
+    </a>
+    <a mat-tab-link class="menu-action" routerLink="/cart" routerLinkActive="active-link">
+        <mat-icon [matBadge]="cartTotalCount$ | async" matBadgeColor="warn">shopping_basket</mat-icon>
+    </a>
 </nav>
+<mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>

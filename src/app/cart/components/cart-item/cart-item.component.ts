@@ -17,7 +17,7 @@ export class CartItemComponent {
     private store: Store<AppState>) { }
 
   public deleteProduct = () => {
-    this.store.dispatch(deleteCartItem({ id: +this.product.id }));
+    this.store.dispatch(deleteCartItem({ id: this.product.id }));
   }
 
 }
