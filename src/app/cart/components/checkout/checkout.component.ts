@@ -34,6 +34,10 @@ export class CheckoutComponent {
         }
       }))
     );
+    this.emptyCart();
+  }
+
+  emptyCart = () => {
     this.store.dispatch(emptyCart());
   }
 
