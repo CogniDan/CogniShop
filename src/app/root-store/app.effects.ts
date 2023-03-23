@@ -55,7 +55,7 @@ export class CartEffects {
                 },
             })
             .pipe(
-                map(({ data }) => addCartItemSuccess({ cart: data.cart })),
+                map(({ data }) => addCartItemSuccess({ cart: data.addItem })),
                 // add exception handling
                 catchError(() => of({ type: '[Cart API] Cart Added Error' })
             ))
@@ -73,7 +73,11 @@ export class CartEffects {
                 },
             })
             .pipe(
-                map(({ data }) => deleteCartItemSuccess({ cart: data.cart })),
+                map(({ data }) => {
+                    console.log('delete')
+                    console.log(data)
+                    return deleteCartItemSuccess({ cart: data.removeItem });
+                }),
                 // add exception handling
                 catchError(() => of({ type: '[Cart API] Cart Removed Error' })
             ))

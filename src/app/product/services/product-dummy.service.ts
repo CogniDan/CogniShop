@@ -19,11 +19,11 @@ export class ProductDummyService {
           return res.map((rec: any) => {
             let p: Product = {
               id: rec.id,
-              name: rec.name,
+              name: rec.title,
               quantity: rec.quantity,
               price: Math.ceil(rec.price),
               description: rec.description,
-              images: rec.images,
+              images: [ rec.image ],
             };
             return p;
           });
