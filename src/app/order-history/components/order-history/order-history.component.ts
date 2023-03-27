@@ -9,13 +9,10 @@ import { OrdersHistoryService } from '../../services/order-history.service';
   styleUrls: ['./order-history.component.scss'],
 })
 export class OrderHistoryComponent implements OnInit {
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
+  ngOnInit(): void {}
   public orders$: Observable<Order[]>;
 
   constructor(private ordersServices: OrdersHistoryService) {
     this.orders$ = ordersServices.getOrders();
   }
 }
-
