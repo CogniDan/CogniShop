@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Apollo } from 'apollo-angular';
-import { map, exhaustMap, catchError, of, switchMap, mergeMap } from 'rxjs';
+import { map, exhaustMap, catchError, of, switchMap, mergeMap, tap } from 'rxjs';
 import { CartActionTypes, initCartSuccess, addCartItemSuccess, deleteCartItemSuccess, checkoutCartSuccess, emptyCartSuccess, incrementCartItemQuantitySuccess, decrementCartItemQuantitySuccess } from './app.actions';
 import { Cart } from './app.model';
 import { GenerateId, GetCartId, GetOrGenerateId, SetCartId } from './app.utils';
@@ -35,8 +35,8 @@ export class CartEffects {
                     return initCartSuccess({ cart: data.cart })
                 }),
                 // add exception handling
-                catchError(() => of({ type: '[Cart API] Cart Loaded Error' })
-            ))
+                catchError(() => of({ type: '[Cart API] Cart Loaded Error' }))
+            )
         )
     ));
 
@@ -59,8 +59,8 @@ export class CartEffects {
             .pipe(
                 map(({ data }) => addCartItemSuccess({ cart: data.addItem })),
                 // add exception handling
-                catchError(() => of({ type: '[Cart API] Cart Added Error' })
-            ))
+                catchError(() => of({ type: '[Cart API] Cart Added Error' }))
+            )
         )
     ));
 
@@ -75,65 +75,58 @@ export class CartEffects {
                 },
             })
             .pipe(
-                map(({ data }) => {
-                    console.log('delete')
-                    console.log(data)
-                    return deleteCartItemSuccess({ cart: data.removeItem });
-                }),
+                map(({ data }) => deleteCartItemSuccess({ cart: data.removeItem })),
                 // add exception handling
-                catchError(() => of({ type: '[Cart API] Cart Removed Error' })
-            ))
+                catchError(() => of({ type: '[Cart API] Cart Removed Error' }))
+            )
         )
     ));
 
-    checkoutCart$ = createEffect(() => 
+    checkoutCart$ = createEffect(() =>
         this.actions$.pipe(
             ofType(CartActionTypes.Checkout),
-            exhaustMap((action: any) => 
-                // this.productService.setOrderedItems(action.checkout.products)
-                //     .pipe(
-                //         mergeMap((res) => this.apollo
-                //             .mutate<any>({
-                //                 mutation: CHECKOUT_CART,
-                //                 variables: {
-                //                     ...action.checkout,
-                //                     cartId: GetCartId(),
-                //                 },
-                //             }),
-                //             (rest, graph) => checkoutCartSuccess({ checkout: graph.data.checkout })),
-                            
-                //             catchError(() => of({ type: '[Cart API] Cart Checkout Error' })
-                //         )
-                //     )
-                {
-                    console.log(action.checkout)
-                   return this.orderService.addOrder({
-                    id: 'id',
-                    userName: action.checkout.shipping.name,
-                    items: action.checkout.products,
-                    totalPrice: 2,
-                    address: action.checkout.shipping.line1 
-
-                   })
+            exhaustMap((action: any) =>
+                this.apollo
+                    .mutate<any>({
+                        mutation: CHECKOUT_CART,
+                        variables: {
+                            ...action.checkout,
+                            cartId: GetCartId(),
+                        },
+                    })
                     .pipe(
-                        mergeMap((res) => this.apollo
-                            .mutate<any>({
-                                mutation: CHECKOUT_CART,
-                                variables: {
-                                    ...action.checkout,
-                                    cartId: GetCartId(),
-                                },
-                            }),
-                            (rest, graph) => checkoutCartSuccess({ checkout: graph.data.checkout })),
-                            
-                            catchError(() => of({ type: '[Cart API] Cart Checkout Error' })
-                        )
+                        tap(_ => this.orderService
+                            .addOrder({
+                                id: 'id',
+                                userName: action.checkout.shipping.name,
+                                items: action.checkout.products,
+                                totalPrice: 2,
+                                address: action.checkout.shipping.line1
+                            })
+                        ),
+                        map(({ data }) => checkoutCartSuccess({ checkout: data.checkout })),
+                        catchError(() => of({ type: '[Cart API] Cart Checkout Error' }))
                     )
-                }
-                
             )
         )
     );
+
+    emptyCartAfterCheckout$ = createEffect(() => this.actions$.pipe(
+        ofType(CartActionTypes.CheckoutSuccess),
+        exhaustMap((action: any) => this.apollo
+            .mutate<any>({
+                mutation: EMPTY_CART,
+                variables: {
+                    id: GetCartId(),
+                },
+            })
+            .pipe(
+                map(({ data }) => emptyCartSuccess()),
+                // add exception handling
+                catchError(() => of({ type: '[Cart API] Cart Removed Error' }))
+            )
+        )
+    ));
 
     emptyCart$ = createEffect(() => this.actions$.pipe(
         ofType(CartActionTypes.Empty),
@@ -147,8 +140,8 @@ export class CartEffects {
             .pipe(
                 map(({ data }) => emptyCartSuccess()),
                 // add exception handling
-                catchError(() => of({ type: '[Cart API] Cart Removed Error' })
-            ))
+                catchError(() => of({ type: '[Cart API] Cart Removed Error' }))
+            )
         )
     ));
 
@@ -166,8 +159,8 @@ export class CartEffects {
             .pipe(
                 map(({ data }) => incrementCartItemQuantitySuccess({ cart: data.incrementItemQuantity })),
                 // add exception handling
-                catchError(() => of({ type: '[Cart API] Cart increment item Error' })
-            ))
+                catchError(() => of({ type: '[Cart API] Cart increment item Error' }))
+            )
         )
     ));
 
@@ -185,8 +178,8 @@ export class CartEffects {
             .pipe(
                 map(({ data }) => decrementCartItemQuantitySuccess({ cart: data.decrementItemQuantity })),
                 // add exception handling
-                catchError(() => of({ type: '[Cart API] Cart decrement item Error' })
-            ))
+                catchError(() => of({ type: '[Cart API] Cart decrement item Error' }))
+            )
         )
     ));
 }

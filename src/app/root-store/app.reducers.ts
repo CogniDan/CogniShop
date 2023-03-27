@@ -26,7 +26,6 @@ export const cartReducer = createReducer(
 );
 
 const newState = (state: AppState, newCart: any): AppState => {
-    console.log(newCart)
     if (newCart?.items != null) {
         const cart = newCart as Cart;
         return {
@@ -69,7 +68,6 @@ const emptyState = (state: AppState): AppState => {
 }
 
 const updateCartItemsState = (state: AppState, newCart: any): AppState => {
-    console.log(newCart)
     return {
         ...state,
         cart: { 

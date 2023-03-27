@@ -15,7 +15,6 @@ export class OrdersHistoryService {
       )
       .pipe(
         map((res: any) => {
-          console.log(res);
           return res.map((or: any) => {
             let o: Order = {
               id: or.id,

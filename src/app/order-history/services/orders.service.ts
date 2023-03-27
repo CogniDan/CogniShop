@@ -13,7 +13,6 @@ export class OrdersService {
     private ordersHistory: OrdersHistoryService
   ) {}
   public addOrder(order: Order) {
-    console.log(order);
 
     return this.ordersHistory.getOrders().pipe(
       switchMap((res) => {
