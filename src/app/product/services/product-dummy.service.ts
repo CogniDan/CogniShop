@@ -20,7 +20,7 @@ export class ProductDummyService {
             let p: Product = {
               id: rec.id,
               name: rec.title,
-              quantity: rec.quantity,
+              quantity: 10,
               price: Math.ceil(rec.price),
               description: rec.description,
               images: [ rec.image ],

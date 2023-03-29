@@ -11,7 +11,7 @@
     <mat-card-header>
       <!-- <div mat-card-avatar class="example-header-image"></div> -->
       <mat-card-title style="max-height: 30px; word-wrap: break-word; white-space: nowrap;">{{ product.name }}</mat-card-title>
-      <mat-card-subtitle>available: {{ product.quantity }}</mat-card-subtitle>
+      <!-- <mat-card-subtitle>available: {{ product.quantity }}</mat-card-subtitle> -->
 
     </mat-card-header>
     <img style="max-height: 250px;" mat-card-image src={{product.images![0]}} alt="Photo of a Shiba Inu">
@@ -25,6 +25,9 @@
     </mat-card-footer>
     <mat-card-actions>
         <button (click)="addProduct()" *ngIf="canAdd">Add</button>
-        <button (click)="deleteProduct()" *ngIf="canDelete">Delete</button>
+        <!-- <button (click)="deleteProduct()" *ngIf="!canAdd">Delete</button> -->
+        <app-quantity-input *ngIf="!canAdd" [value]="currentlyAddedQuantity || 1" (valueChange)="updateQuantity($event)" [max]="100">
+        </app-quantity-input>
+
     </mat-card-actions>
   </mat-card>

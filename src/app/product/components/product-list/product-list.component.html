@@ -1,5 +1,5 @@
 <mat-grid-list cols="3" rowHeight="1:1" class="product-list">
     <mat-grid-tile class="product-tile" *ngFor="let product of products$ | async">
-        <app-product [product]="product" [canAdd]="true" [canDelete]="false"></app-product>
+        <app-product [product]="product" [currentlyAddedQuantity]="getCurrentlyAddedQuantity(product)" [canAdd]="!productAlreadyAdded(product)" [canDelete]="false"></app-product>
     </mat-grid-tile>
 </mat-grid-list>
