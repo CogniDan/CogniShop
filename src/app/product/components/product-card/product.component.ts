@@ -40,7 +40,7 @@ export class ProductComponent {
       this.canAdd = true;
       return;
     }
-    if (quantity < this.product.quantity) {
+    if (quantity < this.currentlyAddedQuantity) {
       this.store.dispatch(decrementCartItemQuantity({ product: this.product, by: this.currentlyAddedQuantity - quantity }));
     } else {
       this.store.dispatch(incrementCartItemQuantity({ product: this.product, by: quantity - this.currentlyAddedQuantity }));

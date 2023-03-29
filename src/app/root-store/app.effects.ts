@@ -95,16 +95,17 @@ export class CartEffects {
                         },
                     })
                     .pipe(
-                        tap(_ => this.orderService
-                            .addOrder({
-                                id: 'id',
-                                userName: action.checkout.shipping.name,
-                                items: action.checkout.products,
-                                totalPrice: 2,
-                                address: action.checkout.shipping.line1
-                            })
+                        mergeMap(
+                            _ => this.orderService
+                                .addOrder({
+                                    id: 'id',
+                                    userName: action.checkout.shipping.name,
+                                    items: action.checkout.products,
+                                    totalPrice: 2,
+                                    address: action.checkout.shipping.line1
+                                }),
+                            (graph, rest) => checkoutCartSuccess({ checkout: graph.data.checkout })
                         ),
-                        map(({ data }) => checkoutCartSuccess({ checkout: data.checkout })),
                         catchError(() => of({ type: '[Cart API] Cart Checkout Error' }))
                     )
             )
